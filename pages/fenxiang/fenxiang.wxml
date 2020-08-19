@@ -1,0 +1,6 @@
+<!--pages/fenxiang/fenxiang.wxml-->
+<view>
+  <map class="map" longitude="{{longitude}}" latitude="{{latitude}}"></map>
+
+
+</view>

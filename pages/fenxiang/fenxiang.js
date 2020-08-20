@@ -15,18 +15,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      longitude:options.longitude,
-      latitude:options.latitude
+    wx.openLocation({
+        latitude: Number(options.latitude),
+        longitude: Number(options.longitude),
+        scale: 18,
+        name: options.name,
+        address: options.address
     });
-    var myAmp = new amap({key:key});
-
-    myAmp.reverseGeocoder({
-      location:options.latitude+','+options.longitude,
-      success:function(res){
-        console.log(res);
-      }
-    })
   },
 
   /**

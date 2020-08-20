@@ -1,7 +1,11 @@
 <view class="map_container">
   <view class="map-tab-bar">
     <view class="map-tab-li {{item.id == status ? 'active' : ''}}" bindtap="getType" data-type="{{item.id}}" wx:key="aroundListId" wx:for="{{aroundList}}">{{item.name}}</view>
-    <view wx:if="{{showbtn}}"><button type="primary" open-type="openSetting" >重新授权使用地理位置</button></view>
+    <view >
+        <button type="primary" open-type="openSetting" wx:if="{{showbtn}}">重新授权使用地理位置</button>
+        <button wx:else></button>
+    </view>
+    <!-- <view ></view> -->
   </view>
   <map class="map" longitude="{{longitude}}" latitude="{{latitude}}" include-points="{{points}}" markers='{{markers}}'>
       <cover-view class="data" wx:if="{{markers}}" wx:for="{{forrn}}">
@@ -13,20 +17,10 @@
     </cover-view>
   </map>
 
-  <!-- <cover-view style='position:fixed;bottom:20px;right:20px;z-index:999;width:100%;'>
-    <cover-view class="coverFont1" wx:for="{{forrn}}">
-        <cover-view class="coverFont1-1">{{item.name}}</cover-view>
-        <cover-view class="coverFont1-2">{{item.typename}}</cover-view>
-        <cover-view class="coverFont1-4">{{item.adres}}</cover-view>
-        <cover-view class="coverFont1-3">距离你:{{item.juli}}米</cover-view>
-    </cover-view>
-    <button class="btn-item">随机选择</button>
-  </cover-view> -->
-
   <cover-view class="btn">
     <button bindtap="bindMark" class="btn-item">选择一个</button>
-     <button class="btn-item" openType="share" wx:if="{{markers}}">召唤好友</button>
-   <!-- <button bindtap="onsharetap" class="btn-item" wx:else>召唤好友</button> -->
+     <button class="btn-item" openType="share" wx:if="{{btmshow}}">召唤朋友</button>
+     <button bindtap="onsharetap" class="btn-item" wx:else>召唤朋友</button>
   </cover-view>
 
   <!-- <view class="map-tab-bar map-foot {{isShow ? '' : 'map-hide'}}">

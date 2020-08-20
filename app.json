@@ -10,15 +10,15 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarTitleText": "",
-    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#F5F5F5",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FAE8B6"
   },
   "tabBar": {
     "color": "#7a7a7a",
-    "selectedColor": "#007aff",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "selectedColor": "#6ABF57",
+    "backgroundColor": "#F5F5F5",
+    "borderStyle": "white",
     "position": "bottom",
     "list": [
       {

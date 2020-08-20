@@ -47,6 +47,7 @@ App({
       heighestScore: 0,
       systemInfo: null,
       zhuan: 0,
-      first_load:false
+      first_load:false,
+      map:true
    }
 })

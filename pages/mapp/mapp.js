@@ -1,5 +1,4 @@
 var app = getApp();
-console.log(app);
 var amap = require('./amap-wx.js');
 var key = '960476552c63083f9ff2706d5a9d7f60';//app.data.key;
 Page({
@@ -51,18 +50,21 @@ Page({
     forrn:[],
     nlatitude:null,
     nlongitude: null,
-    showbtn:false
+    showbtn:false,
+    btmshow:''
   },
   onShareAppMessage: function() {
+    app.globalData.map = false;
+    var lnglat = this.data.forrn[0].location.split(",");
     return this.data.forrn ? {
-        title: "我们去" + this.data.forrn[0].name + "吧",
-        path: "/pages/fenxiang/fenxiang?latitude=" + '39.901930' + "&longitude=" + '116.407261' + "&name=" + this.data.forrn.name + "&address=" + this.data.forrn.adres,
-        imageUrl: './images/ding.png'
+        title: "我们去" + this.data.forrn[0].name + "吧!",
+        path: "/pages/fenxiang/fenxiang?latitude=" + lnglat[1] + "&longitude=" + lnglat[0] + "&name=" + this.data.forrn[0].name + "&address=" + this.data.forrn[0].adres,
+        imageUrl: '../../images/come.png'
     } : 1;
   },
   onShow(){
     // 判断是后台切到前台刷新接口
-    if (app.globalData.first_load ==true){
+    if (app.globalData.first_load ==true && app.globalData.map == true){
         app.globalData.first_load =false;
         this.setData({
           showbtn:false
@@ -148,13 +150,22 @@ Page({
       　　fail: function (info) {
       　　}
       })
-      // wx.chooseLocation({
-      //   latitude: lnglat[1],
-      //   longitude:lnglat[0]
-      // })
     _this.setData({
-      forrn:data
+      forrn:data,
+      btmshow:'1'
     })
+  },
+  onsharetap: function() {
+      wx.showModal({
+        title: "温馨提示", // 提示的标题
+        content: "请先选择一个哦!", // 提示的内容
+        showCancel: false, // 是否显示取消按钮，默认true
+        cancelText: "取消", // 取消按钮的文字，最多4个字符
+        cancelColor: "#000000", // 取消按钮的文字颜色，必须是16进制格式的颜色字符串
+        confirmText: "确定", // 确认按钮的文字，最多4个字符
+        confirmColor: "#576B95", // 确认按钮的文字颜色，必须是 16 进制格式的颜色字符串
+    });
+    return;
   },
   getType(e) {//获取选择的附近关键词，同时更新状态
     this.setData({ status: e.currentTarget.dataset.type})
@@ -238,7 +249,6 @@ Page({
   },
   //随机取出不重复得数据
   getRand(typeData,num){
-    // console.log(typeData);
       let numArr=[];
       let itemData=typeData;
       let arrLength=itemData.length;

@@ -20,7 +20,7 @@
       <!-- 选项内容 -->
       <view class="gb-wheel-list">
          <view class="gb-wheel-item" data-index="{{index}}" wx:for="{{awardsConfig.awards}}" wx:key='key'>
-            <view class="gb-wheel-icontent" style="height:262rpx;overflow:hidden;font-size:{{item.name.length>9?'20':'26'}}rpx;line-height:{{item.name.length>9?'20':'26'}}rpx;width:26rpx;padding-top:5rpx;transform: rotate({{index*turnNum}}turn);transform-origin: 50% {{size.h/2-2}}rpx">
+            <view class="gb-wheel-icontent" style="height:262rpx;overflow:hidden;font-size:{{item.name.length>9?'20':'26'}}rpx;line-height:{{item.name.length>9?'20':'26'}}rpx;width:26rpx;padding-top:5rpx;transform: rotate({{index*turnNum}}turn);transform-origin: 50% {{size.h/2-2}}rpx;font-weight:350;">
                <text style='word-break:break-all;'>{{item.name}}</text>
             </view>
          </view>

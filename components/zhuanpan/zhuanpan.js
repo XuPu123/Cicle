@@ -32,7 +32,7 @@ Component({
 
       musicflg: {
          type: Boolean, // 转盘声音开关，默认true
-         value: true
+         value: false
       },
 
       fastJuedin: {

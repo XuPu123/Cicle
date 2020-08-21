@@ -23,7 +23,7 @@
          <image class="modules_icon" mode="scaleToFill" src="https://gamesdata.oss-cn-hangzhou.aliyuncs.com/xiaojueding/icon_edit_add_60.png"></image>
       </view>
       <view class="modules_word_box">
-         <view class="modules_word">增加选项</view>
+         <view class="modules_word" bindtap="checkmgc">增加选项</view>
       </view>
    </view>
 

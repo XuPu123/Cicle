@@ -159,85 +159,117 @@ Page({
                mask: false
             })
             return;
-         }
-
-         if (util.isNull(myJuedin)) {
-            app.globalData.myJueding = true;
-            arr.push(default_input_answer_list);
-            wx.setStorageSync('myJuedin', arr);
-            wx.setStorageSync('switchTab', default_input_answer_list.id);
-            all.push(default_input_answer_list);
-            wx.setStorageSync('all', all);
-            wx.setStorageSync('num', wx.getStorageSync('num') + 1);
-            wx.showToast({
-               title: '保存成功',
-               icon: 'success',
-               mask: false,
-               success: function () {
-                  setTimeout(function () {
-                     wx.switchTab({
-                        url: '../index/index'
+         } else {
+            //拼接字符串进行检查敏感词
+            var mgc = '';
+            for (let mgci in input_answer_list) {
+               mgc += input_answer_list[mgci].name;
+            }
+            wx.request({
+               url: 'http://49.232.18.248:8080/test.php/index',
+               method:'post',
+               data: {
+                  str:mgc+that.data.name
+               },
+               success:function(res) {
+                  if (!res.data.success) {
+                     wx.showModal({
+                        title: "温馨提示", // 提示的标题
+                        content: "输入内容不合法/含有敏感词", // 提示的内容
+                        showCancel: false, // 是否显示取消按钮，默认true
+                        cancelText: "取消", // 取消按钮的文字，最多4个字符
+                        cancelColor: "#000000", // 取消按钮的文字颜色，必须是16进制格式的颜色字符串
+                        confirmText: "确定", // 确认按钮的文字，最多4个字符
+                        confirmColor: "#576B95", // 确认按钮的文字颜色，必须是 16 进制格式的颜色字符串
+                  });
+                     //隐藏转发
+                     wx.hideShareMenu({
+                        menus: ['shareAppMessage', 'shareTimeline']
                      })
-                  }, 1500)
+                     return;
+                  } else {
+                     //通过敏感词验证
+                     if (util.isNull(myJuedin)) {
+                        app.globalData.myJueding = true;
+                        arr.push(default_input_answer_list);
+                        wx.setStorageSync('myJuedin', arr);
+                        wx.setStorageSync('switchTab', default_input_answer_list.id);
+                        all.push(default_input_answer_list);
+                        wx.setStorageSync('all', all);
+                        wx.setStorageSync('num', wx.getStorageSync('num') + 1);
+                        wx.showToast({
+                           title: '保存成功',
+                           icon: 'success',
+                           mask: false,
+                           success: function () {
+                              setTimeout(function () {
+                                 wx.switchTab({
+                                    url: '../index/index'
+                                 })
+                              }, 1500)
+                           }
+                        })
+                        return;
+                     }
+                     
+                     for (let i in myJuedin) {
+                        if (default_input_answer_list.num == myJuedin[i].num) {
+                           myJuedin[i] = default_input_answer_list;
+                           wx.setStorageSync('myJuedin', myJuedin);
+                           for (let x in all) {
+                              if (all[x].id == default_input_answer_list.id) {
+                                 all[x] = default_input_answer_list;
+                                 wx.setStorageSync('all', all);
+                                 break;
+                              }
+                           }
+                           app.globalData.myJueding = true;
+                           wx.setStorageSync('switchTab', default_input_answer_list.id);
+            
+                           if (that.data.flg == 1) {
+                              that.setData({
+                                 flg: 0
+                              })
+                           }
+            
+                           wx.showToast({
+                              title: '保存成功',
+                              icon: 'success',
+                              mask: false,
+                              success: function () {
+                                 setTimeout(function () {
+                                    wx.switchTab({
+                                       url: '../index/index'
+                                    })
+                                 }, 1500)
+                              }
+                           })
+                        } else {
+                           //个人决定添加的
+                           app.globalData.myJueding = true;
+                           wx.setStorageSync('switchTab', default_input_answer_list.id);
+                           myJuedin.push(default_input_answer_list);
+                           wx.setStorageSync('myJuedin', myJuedin);
+                           all.push(default_input_answer_list);
+                           wx.setStorageSync('all', all);
+                           wx.setStorageSync('num', wx.getStorageSync('num') + 1);
+                           wx.showToast({
+                              title: '保存成功',
+                              icon: 'success',
+                              mask: false,
+                              success: function () {
+                                 setTimeout(function () {
+                                    wx.switchTab({
+                                       url: '../index/index'
+                                    })
+                                 }, 1500)
+                              }
+                           })
+                        }
+                     }
+                  }
                }
             })
-            return;
-         }
-         
-         for (let i in myJuedin) {
-            if (default_input_answer_list.num == myJuedin[i].num) {
-               myJuedin[i] = default_input_answer_list;
-               wx.setStorageSync('myJuedin', myJuedin);
-               for (let x in all) {
-                  if (all[x].id == default_input_answer_list.id) {
-                     all[x] = default_input_answer_list;
-                     wx.setStorageSync('all', all);
-                     break;
-                  }
-               }
-               app.globalData.myJueding = true;
-               wx.setStorageSync('switchTab', default_input_answer_list.id);
-
-               if (that.data.flg == 1) {
-                  that.setData({
-                     flg: 0
-                  })
-               }
-
-               wx.showToast({
-                  title: '保存成功',
-                  icon: 'success',
-                  mask: false,
-                  success: function () {
-                     setTimeout(function () {
-                        wx.switchTab({
-                           url: '../index/index'
-                        })
-                     }, 1500)
-                  }
-               })
-            } else {
-               //个人决定添加的
-               app.globalData.myJueding = true;
-               wx.setStorageSync('switchTab', default_input_answer_list.id);
-               myJuedin.push(default_input_answer_list);
-               wx.setStorageSync('myJuedin', myJuedin);
-               all.push(default_input_answer_list);
-               wx.setStorageSync('all', all);
-               wx.setStorageSync('num', wx.getStorageSync('num') + 1);
-               wx.showToast({
-                  title: '保存成功',
-                  icon: 'success',
-                  mask: false,
-                  success: function () {
-                     setTimeout(function () {
-                        wx.switchTab({
-                           url: '../index/index'
-                        })
-                     }, 1500)
-                  }
-               })
-            }
          }
       }
    },
@@ -281,5 +313,38 @@ Page({
             console.log('进入分享失败==========', res);
          }
       }
+   },
+   checkmgc:function() {
+      var that = this, myJuedin = wx.getStorageSync('myJuedin'), default_input_answer_list = that.data.default_input_answer_list, input_answer_list = that.data.input_answer_list, all = wx.getStorageSync('all'), arr = [];
+       //拼接字符串进行检查敏感词
+       var mgc = '';
+       for (let mgci in input_answer_list) {
+          mgc += input_answer_list[mgci].name;
+       }
+      wx.request({
+         url: 'http://49.232.18.248:8080/test.php/index',
+         method:'post',
+         data: {
+            str:mgc+that.data.name
+         },
+         success:function(res) {
+            if (!res.data.success) {
+               wx.showModal({
+                  title: "温馨提示", // 提示的标题
+                  content: "输入内容不合法/含有敏感词", // 提示的内容
+                  showCancel: false, // 是否显示取消按钮，默认true
+                  cancelText: "取消", // 取消按钮的文字，最多4个字符
+                  cancelColor: "#000000", // 取消按钮的文字颜色，必须是16进制格式的颜色字符串
+                  confirmText: "确定", // 确认按钮的文字，最多4个字符
+                  confirmColor: "#576B95", // 确认按钮的文字颜色，必须是 16 进制格式的颜色字符串
+              });
+              //隐藏转发
+              wx.hideShareMenu({
+               menus: ['shareAppMessage', 'shareTimeline']
+             })
+              return;
+            }
+         }
+      })
    }
 })
